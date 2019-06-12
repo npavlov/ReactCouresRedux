@@ -1,7 +1,7 @@
 import React from "react";
 import "./ToDoListItem.css";
 import { connect } from "react-redux";
-import { IData } from "../Interfaces/IData";
+import { IData } from "../Interfaces";
 import * as actions from "../AC";
 import { bindActionCreators } from "redux";
 
@@ -32,7 +32,6 @@ const ToDoListItem = (props: {
       <button
         className="btn btn-outline-danger btn-sm float-right"
         onClick={() => {
-          console.log(props);
           props.RemoveItemAction(id);
         }}
       >

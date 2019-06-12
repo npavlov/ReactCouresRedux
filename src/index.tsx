@@ -6,13 +6,11 @@ import { createStore } from "redux";
 import ToDoReducer from "./Reducer";
 import { Provider } from "react-redux";
 
-const store = createStore(ToDoReducer);
-
-console.log(store);
+const store = createStore(ToDoReducer as any);
 
 const ReduxApp = () => (
   <Provider store={store}>
-    <App toDo={[]} />
+    <App />
   </Provider>
 );
 

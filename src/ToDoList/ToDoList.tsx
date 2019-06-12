@@ -1,14 +1,16 @@
 import React from "react";
 import ToDoListItem from "../ToDoListItem";
 import "./ToDoList.css";
-import { IData } from "../Interfaces/IData";
-import { connect } from "react-redux";
+import { IData } from "../Interfaces";
 
 interface TodoListProps {
   toDo: IData[];
 }
 
-class ToDoList extends React.Component<TodoListProps, TodoListProps> {
+export default class ToDoList extends React.Component<
+  TodoListProps,
+  TodoListProps
+> {
   render() {
     const { toDo } = this.props;
 
@@ -24,11 +26,3 @@ class ToDoList extends React.Component<TodoListProps, TodoListProps> {
     return <ul className="list-group">{elements}</ul>;
   }
 }
-
-const mapStateToProps = (state: IData[]) => {
-  return {
-    toDo: state
-  };
-};
-
-export default connect(mapStateToProps)(ToDoList);

@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css";
-import { IData } from "../Interfaces/IData";
+import { IData } from "../Interfaces";
 
 const Header = (props: { toDo: IData[] }) => {
   const { toDo } = props;

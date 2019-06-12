@@ -26,4 +26,25 @@ const DoneItemAction = (id: number) => {
   };
 };
 
-export { AddItemAction, RemoveItemAction, ImportantItemAction, DoneItemAction };
+const FilterAction = (active: boolean) => {
+  return {
+    type: "FILTER",
+    active: active
+  };
+};
+
+const PatternAction = (pattern: string) => {
+  return {
+    type: "PATTERN",
+    pattern: pattern
+  };
+};
+
+export {
+  AddItemAction,
+  RemoveItemAction,
+  ImportantItemAction,
+  DoneItemAction,
+  FilterAction,
+  PatternAction
+};

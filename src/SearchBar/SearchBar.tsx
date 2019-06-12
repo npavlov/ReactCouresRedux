@@ -1,22 +1,17 @@
 import React from "react";
 import "./SearchBar.css";
+import { connect } from "react-redux";
+import * as actions from "../AC";
+import { bindActionCreators } from "redux";
 
 const SearchBar = (props: {
-  onPatternChanged(e: React.ChangeEvent<HTMLInputElement>): void;
-  onDoneChanged(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
-  onActiveChanged(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   done: boolean;
   active: boolean;
   pattern: string;
+  PatternAction(pattern: string): void;
+  FilterAction(active: boolean): void;
 }) => {
-  const {
-    done,
-    active,
-    pattern,
-    onPatternChanged,
-    onDoneChanged,
-    onActiveChanged
-  } = props;
+  const { done, active, pattern, PatternAction, FilterAction } = props;
 
   const doneButtonStyle = done ? "btn btn-info" : "btn btn-outline-info";
 
@@ -30,20 +25,26 @@ const SearchBar = (props: {
           className="form-control"
           placeholder="Search..."
           value={pattern}
-          onChange={onPatternChanged}
+          onChange={e => {
+            PatternAction(e.target.value);
+          }}
         />
         <div className="input-group-append">
           <button
             className={doneButtonStyle}
             type="button"
-            onClick={onDoneChanged}
+            onClick={() => {
+              FilterAction(false);
+            }}
           >
             Done
           </button>
           <button
             className={activeButtonStyle}
             type="button"
-            onClick={onActiveChanged}
+            onClick={() => {
+              FilterAction(true);
+            }}
           >
             Active
           </button>
@@ -53,4 +54,16 @@ const SearchBar = (props: {
   );
 };
 
-export default SearchBar;
+const mapDispatchToProps = (dispatch: any) => {
+  const { PatternAction, FilterAction } = bindActionCreators(actions, dispatch);
+
+  return {
+    PatternAction,
+    FilterAction
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SearchBar);

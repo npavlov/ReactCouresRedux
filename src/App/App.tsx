@@ -1,75 +1,36 @@
 import React from "react";
 import ToDoList from "../ToDoList";
-import { IData } from "../Interfaces/IData";
+import { IStore, IData } from "../Interfaces";
 import Header from "../Header";
 import SearchBar from "../SearchBar";
 import AddItem from "../AddItem";
+import { connect } from "react-redux";
 
-export default class App extends React.Component<
-  { toDo: IData[] },
-  { toDo: IData[]; showDone: boolean; showActive: boolean; pattern: string }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { ...props, pattern: "", showActive: false, showDone: false };
+const App = (props: IStore) => {
+  const { data, showActive, showDone, pattern } = props;
+  let toDoFiltered: IData[] = [...data];
+  if (showDone) {
+    toDoFiltered = data.filter(x => x.done === true);
+  }
+  if (showActive) {
+    toDoFiltered = data.filter(x => x.done === false);
+  }
+  if (pattern.length > 0) {
+    toDoFiltered = toDoFiltered.filter(x => x.label.indexOf(pattern) > -1);
   }
 
-  HandleSearchBarDoneClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    this.setState(({ showDone }) => {
-      return {
-        showDone: !showDone,
-        showActive: false
-      };
-    });
-  };
+  return (
+    <div>
+      <SearchBar done={showDone} active={showActive} pattern={pattern} />
+      <Header toDo={data} />
+      <ToDoList toDo={toDoFiltered} />
+      <AddItem />
+    </div>
+  );
+};
 
-  HandleSearchBarActiveClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    this.setState(({ showActive }) => {
-      return {
-        showDone: false,
-        showActive: !showActive
-      };
-    });
-  };
+const mapStateToProps = (state: IStore) => {
+  return { ...state };
+};
 
-  HandleSearchBarPattern = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      pattern: e.target.value
-    });
-  };
-
-  render() {
-    const { toDo, showActive, showDone, pattern } = this.state;
-
-    let toDoFiltered: IData[] = [...toDo];
-    if (showDone) {
-      toDoFiltered = toDo.filter(x => x.done === true);
-    }
-    if (showActive) {
-      toDoFiltered = toDo.filter(x => x.done === false);
-    }
-    if (pattern.length > 0) {
-      toDoFiltered = toDoFiltered.filter(x => x.label.indexOf(pattern) > -1);
-    }
-
-    return (
-      <div>
-        <SearchBar
-          onDoneChanged={this.HandleSearchBarDoneClick}
-          onActiveChanged={this.HandleSearchBarActiveClick}
-          done={showDone}
-          active={showActive}
-          onPatternChanged={this.HandleSearchBarPattern}
-          pattern=""
-        />
-        <Header {...this.state} />
-        <ToDoList {...toDoFiltered} />
-        <AddItem />
-      </div>
-    );
-  }
-}
+export default connect(mapStateToProps)(App);

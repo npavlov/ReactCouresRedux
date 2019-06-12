@@ -1,4 +1,4 @@
-export interface ITodoListItem {
+export default interface ITodoListItem {
   label: string;
   done: boolean;
   important: boolean;
