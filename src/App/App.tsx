@@ -14,42 +14,6 @@ export default class App extends React.Component<
     this.state = { ...props, pattern: "", showActive: false, showDone: false };
   }
 
-  HandleClick = (id: number, propName: string) => {
-    this.setState(({ toDo }) => {
-      const idx = toDo.findIndex(x => x.id === id);
-
-      const oldItem = toDo[idx];
-
-      const newItem = {
-        ...oldItem,
-        [propName]: !oldItem[propName]
-      };
-
-      const deleteArr: IData[] = propName === "delete" ? [] : [newItem];
-
-      return {
-        toDo: [...toDo.slice(0, idx), ...deleteArr, ...toDo.slice(idx + 1)]
-      };
-    });
-  };
-
-  AddItem = (label: string) => {
-    this.setState(({ toDo }) => {
-      const id = Math.max.apply(Math, toDo.map(x => x.id)) + 1;
-
-      const newItem: IData = {
-        id: id,
-        label: label,
-        important: false,
-        done: false
-      };
-
-      return {
-        toDo: [...toDo, newItem]
-      };
-    });
-  };
-
   HandleSearchBarDoneClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -100,10 +64,11 @@ export default class App extends React.Component<
           done={showDone}
           active={showActive}
           onPatternChanged={this.HandleSearchBarPattern}
+          pattern=""
         />
         <Header {...this.state} />
-        <ToDoList toDo={toDoFiltered} onItemChange={this.HandleClick} />
-        <AddItem AddItem={this.AddItem} />
+        <ToDoList {...toDoFiltered} />
+        <AddItem />
       </div>
     );
   }

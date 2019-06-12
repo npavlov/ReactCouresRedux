@@ -1,16 +1,17 @@
 import React from "react";
 import "./ToDoListItem.css";
-import { ITodoListItem } from "../Interfaces/IToDoListItem";
+import { connect } from "react-redux";
+import { IData } from "../Interfaces/IData";
+import * as actions from "../AC";
+import { bindActionCreators } from "redux";
 
-const ToDoListItem = (props: ITodoListItem) => {
-  const {
-    label,
-    important,
-    done,
-    onItemCheckBoxChange,
-    onItemDelete,
-    onItemImportant
-  } = props;
+const ToDoListItem = (props: {
+  data: IData;
+  RemoveItemAction(id: number): void;
+  ImportantItemAction(id: number): void;
+  DoneItemAction(id: number): void;
+}) => {
+  const { label, important, done, id } = props.data;
 
   const className = done ? "done" : "";
 
@@ -20,17 +21,28 @@ const ToDoListItem = (props: ITodoListItem) => {
 
   return (
     <div style={style} className={className}>
-      <input type="checkbox" checked={done} onChange={onItemCheckBoxChange} />
+      <input
+        type="checkbox"
+        checked={done}
+        onChange={() => {
+          props.DoneItemAction(id);
+        }}
+      />
       {label}
       <button
         className="btn btn-outline-danger btn-sm float-right"
-        onClick={onItemDelete}
+        onClick={() => {
+          console.log(props);
+          props.RemoveItemAction(id);
+        }}
       >
         <i className="fa fa-trash" />
       </button>
       <button
         className="btn btn-outline-success btn-sm float-right"
-        onClick={onItemImportant}
+        onClick={() => {
+          props.ImportantItemAction(id);
+        }}
       >
         <i className="fa fa-exclamation-triangle" />
       </button>
@@ -38,4 +50,21 @@ const ToDoListItem = (props: ITodoListItem) => {
   );
 };
 
-export default ToDoListItem;
+const mapDispatchToProps = (dispatch: any) => {
+  const {
+    RemoveItemAction,
+    ImportantItemAction,
+    DoneItemAction
+  } = bindActionCreators(actions, dispatch);
+
+  return {
+    RemoveItemAction,
+    ImportantItemAction,
+    DoneItemAction
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ToDoListItem);

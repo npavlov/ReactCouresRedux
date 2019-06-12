@@ -1,8 +1,12 @@
 import React from "react";
 import "./AddItem.css";
-export default class AddItem extends React.Component<
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../AC";
+
+class AddItem extends React.Component<
   {
-    AddItem(label: string): void;
+    AddItemAction(label: string): void;
   },
   {
     text: string;
@@ -24,7 +28,7 @@ export default class AddItem extends React.Component<
   onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    this.props.AddItem(this.state.text);
+    this.props.AddItemAction(this.state.text);
 
     this.setState({
       text: ""
@@ -56,3 +60,16 @@ export default class AddItem extends React.Component<
     );
   }
 }
+
+const mapDispatchToProps = (dispatch: any) => {
+  const { AddItemAction } = bindActionCreators(actions, dispatch);
+
+  return {
+    AddItemAction
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AddItem);
