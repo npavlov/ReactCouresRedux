@@ -10,7 +10,7 @@ const data: IData[] = [
 const handleClick = (toDo: IData[], id: number, propName: string): IData[] => {
   const idx = toDo.findIndex(x => x.id === id);
 
-  const oldItem = toDo[idx];
+  const oldItem: any = toDo[idx];
 
   const newItem = {
     ...oldItem,

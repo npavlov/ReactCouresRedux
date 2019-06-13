@@ -32,7 +32,6 @@ const SearchBar = (props: {
         <div className="input-group-append">
           <button
             className={doneButtonStyle}
-            type="button"
             onClick={() => {
               FilterAction(false);
             }}
@@ -41,7 +40,6 @@ const SearchBar = (props: {
           </button>
           <button
             className={activeButtonStyle}
-            type="button"
             onClick={() => {
               FilterAction(true);
             }}
