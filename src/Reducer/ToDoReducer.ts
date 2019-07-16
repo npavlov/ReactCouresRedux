@@ -7,6 +7,13 @@ const data: IData[] = [
   { id: 4, label: "clean my ass", important: true, done: false }
 ];
 
+const initialState = {
+  data: data,
+  showActive: false,
+  showDone: false,
+  pattern: ""
+};
+
 const handleClick = (toDo: IData[], id: number, propName: string): IData[] => {
   const idx = toDo.findIndex(x => x.id === id);
 
@@ -22,16 +29,7 @@ const handleClick = (toDo: IData[], id: number, propName: string): IData[] => {
   return [...toDo.slice(0, idx), ...deleteArr, ...toDo.slice(idx + 1)];
 };
 
-const ToDoReducer = (state: IStore, action: any): IStore => {
-  if (state === undefined) {
-    return {
-      data: data,
-      showActive: false,
-      showDone: false,
-      pattern: ""
-    };
-  }
-
+const ToDoReducer = (state: IStore = initialState, action: any): IStore => {
   if (action.type === "ADD") {
     const id = Math.max.apply(Math, state.data.map(x => x.id)) + 1;
 
