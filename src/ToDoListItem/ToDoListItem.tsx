@@ -50,17 +50,7 @@ const ToDoListItem = (props: {
 };
 
 const mapDispatchToProps = (dispatch: any) => {
-  const {
-    RemoveItemAction,
-    ImportantItemAction,
-    DoneItemAction
-  } = bindActionCreators(actions, dispatch);
-
-  return {
-    RemoveItemAction,
-    ImportantItemAction,
-    DoneItemAction
-  };
+  return bindActionCreators(actions, dispatch);
 };
 
 export default connect(
