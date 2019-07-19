@@ -3,7 +3,6 @@ import "./ToDoListItem.css";
 import { connect } from "react-redux";
 import { IData } from "../Interfaces";
 import * as actions from "../AC";
-import { bindActionCreators } from "redux";
 
 const ToDoListItem = (props: {
   data: IData;
@@ -49,18 +48,8 @@ const ToDoListItem = (props: {
   );
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  const {
-    RemoveItemAction,
-    ImportantItemAction,
-    DoneItemAction
-  } = bindActionCreators(actions, dispatch);
-
-  return {
-    RemoveItemAction,
-    ImportantItemAction,
-    DoneItemAction
-  };
+const mapDispatchToProps = {
+  ...actions
 };
 
 export default connect(
